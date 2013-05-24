@@ -217,7 +217,14 @@ body.section-0 #map { opacity:0.5; }
       Map design &copy; <a href='http://mapbox.com/about/maps/'>MapBox</a>
     </small>
   </section>
+
+<section id='telegraph'>
+    <h2>Manhattan Criminal Court Holding Pens</h2>
+    <h2>100 Centre Street</h2>
+    <p>While at Central Booking, defendants are interviewed by the Criminal Justice Agency in order to generate a Release on Recognizance report. The report gives an indication about the perceived risk of the defendant to not return at a future court date if released from police custody. Possible recommendations for a defendant would be Low-Risk for not returning: R.O.R.; Medium-Risk: Bail Recommendation; High-Risk: No Bail.</p>
+</section>
 </article>
+
 
 <script>
 var geojson = [
@@ -239,6 +246,8 @@ var geojson = [
     "properties": { "id": "telegraph" } },
   { "geometry": { "type": "Point", "coordinates": [-0.12416858, 51.50779757] },
     "properties": { "id": "charing-cross" } }
+  { "geometry": { "type": "Point", "coordinates": [-0.10669358, 51.51433123] },
+    "properties": { "id": "telegraph" } },    
 ];
 var tiles = mapbox.layer().tilejson({
   tiles: [ "http://a.tiles.mapbox.com/v3/examples.map-liczq28b/{z}/{x}/{y}.png" ]
