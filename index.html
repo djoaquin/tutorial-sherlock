@@ -6,6 +6,9 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src='http://underscorejs.org/underscore-min.js'></script>
+<!--<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />-->
+
 <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>
 <link href='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
 <link href='stylesheet.css' rel='stylesheet' type="text/css"/>
@@ -42,19 +45,19 @@
     <p>The arresting police officer faxes a copy of the Arrest Report to the office of the Assistant District Attorney of the borough where the crime took place in order to generate a formal Complaint, which includes the crimes the defendant is charged with. The ADA faxes back a copy of the Complaint to the arresting officer for review.</p>
 </section>
 
-<section id='woolwich'>
+<section id='aldgate'>
     <h2>NYPD 19th Precinct</h2>
     <h2>153 East 67th Street</h2>
     <p>Once the officer and the ADA resolve the differences via telephone, the officer signs the now Sworn Complaint and faxes back to the DA's Office which starts the criminal prosecution. </p>
 </section>
 
-<section id='gloucester'>
+<section id='london-bridge'>
     <h2>Manhattan Criminal Court Central Booking</h2>
     <h2>100 Centre Street</h2>
     <p>Each borough has its own criminal court each with their own Central Booking. Mug shots and fingerprints of the defendant are taken to generate an Arrest Report.A scan of the defendant's irises are taken for future identity verification. A Movement Slip with the mugshot, NYPD charges, and other arrest information is created and accompanies the defendant. 
 </section>
 
-<section id='caulfield-gardens'>
+<section id='woolwich'>
     <h2>New York State Division of Criminal Justice Services</h2>
     <h2>80 South Swan Street, Albany</h2>
     <p>The fingerprints taken from the defendant are sent for processing to DCJS. The criminal history, commonly known as the rap sheet, associated with the defendant's fingerprints are matched within New York and for each individual state for which a rap sheet exists. </p>
@@ -148,15 +151,15 @@
 
 <script>
 var geojson = [
-  { "geometry": { "type": "Point", "coordinates": [-0.12960000, 51.50110000] },
-    "properties": { "id": "cover", "zoom": 13 } },
-  { "geometry": { "type": "Point", "coordinates": [-0.15591514, 51.51830379] },
+  { "geometry": { "type": "Point", "coordinates": [-73.973694, 40.772417] },
+    "properties": { "id": "cover", "zoom": 11 } },
+  { "geometry": { "type": "Point", "coordinates": [-73.954641,40.779101] },
     "properties": { "id": "baker" } },
-  { "geometry": { "type": "Point", "coordinates": [-0.07571203, 51.51424049] },
+  { "geometry": { "type": "Point", "coordinates": [-73.964004,40.767009] },
     "properties": { "id": "aldgate" } },
-  { "geometry": { "type": "Point", "coordinates": [-0.08533793, 51.50438536] },
+  { "geometry": { "type": "Point", "coordinates": [-74.001389, 40.716132] },
     "properties": { "id": "london-bridge" } },
-  { "geometry": { "type": "Point", "coordinates": [0.05991101, 51.48752939] },
+  { "geometry": { "type": "Point", "coordinates": [-73.759427, 42.653729] },
     "properties": { "id": "woolwich" } },
   { "geometry": { "type": "Point", "coordinates": [-0.18335806, 51.49439521] },
     "properties": { "id": "gloucester" } },
