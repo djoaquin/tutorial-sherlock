@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'/>
+<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>	<link href='http://api.ties.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
+
+<style>
+	body {
+	margin:0px;
+	font:normal 15px/20px Arial,sans-serif;
+	background:#fff;	
+	}
+	#map  {
+	position:absolute;
+ 	top:0px;
+	bottom:0px;
+		left:0px;
+	width:100%;
+ 	}
+.spot {
+  width:60px;
+  height:60px;
+  margin:-40px 0px 0px -40px;
+  border-radius:50%;
+  border:10px solid #ff9270;
+  background:#ff9270 url(sprite.png) 100px 100px no-repeat;
+  position:absolute;
+  }
+.spot-scene { background-position:-120px -20px; }
+.spot-precinct { background-position:-220px -20px; }
+.spot-ecab { background-position:-320px -20px; }
+.spot-central-booking { background-position:-420px -20px; }
+.spot-dcjs { background-position:-520px -20px; }
+.spot-holding-pens { background-position:-620px -20px; }
+.spot-breakdown-room { background-position:-720px -20px; }
+.spot-clerks-office { background-position:-820px -20px; }
+.spot-oca { background-position:-120px -20px; }
+.spot-interview-pens { background-position:-220px -20px; }
+.spot-nypd-desk { background-position:-320px -20px; }
+.spot-benches { background-position:-420px -20px; }
+.spot-court-officer { background-position:-520px -20px; }
+.spot-defense-stand { background-position:-620px -20px; }
+.spot-judge-bench { background-position:-720px -20px; }
+.spot-end-cover { background-position:-820px -20px; }
+ </style>
+ </head>
+
+<body>
+ <div id='map'></div>
+ 
+ <script>
+ var geojson = [
+  { "geometry": { "type": "Point", "coordinates": [-73.954641,40.779101] },
+    "properties": { "id": "scene" } },
+  { "geometry": { "type": "Point", "coordinates": [-73.964004,40.767009] },
+    "properties": { "id": "precinct" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001389, 40.716132] },
+    "properties": { "id": "ecab" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.715721] },
+    "properties": { "id": "central-booking" } },
+  { "geometry": { "type": "Point", "coordinates": [-73.759427, 42.653729] },
+    "properties": { "id": "dcjs" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.71000] },
+    "properties": { "id": "holding-pens" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.70000] },
+    "properties": { "id": "breakdown-room" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.69000] },
+    "properties": { "id": "clerks-office" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.68000] },
+    "properties": { "id": "oca" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.67000] },
+    "properties": { "id": "interview-pens" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.66000] },
+    "properties": { "id": "nypd-desk" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.68000] },
+    "properties": { "id": "benches" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.65000] },
+    "properties": { "id": "court-officer" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.64000] },
+    "properties": { "id": "defense-stand" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.63000] },
+    "properties": { "id": "judge-bench" } },
+  { "geometry": { "type": "Point", "coordinates": [-73.883657, 40.791335] },
+    "properties": { "id": "end-cover" } }
+	];
+  var tiles = mapbox.layer().tilejson({
+  	tiles: [ "http://a.tiles.mapbox.com/v3/codeforamerica.map-hou1j3ux/{z}/{x}/{y}.png" ]
+	});
+  var spots = mapbox.markers.layer()
+    // Load up markers from geojson data.
+  .features(geojson)
+    // Define a new factory function. Takes geojson input and returns a
+    // DOM element that represents the point.
+  .factory(function(f) {
+    var el = document.createElement('div');
+    el.className = 'spot spot-' + f.properties.id;
+    return el;
+  });
+
+    var map = mapbox
+      // Creates the map with tile and spots layers.
+    .map('map', [tiles, spots])
+      // Sets the initial map view to 0.1296E, 51.5011N @ Z14.
+    .centerzoom({ lon:-73.973694, lat:40.772417 }, 14);
+
+ </script>
+ 
+ </body>
