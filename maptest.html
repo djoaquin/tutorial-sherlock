@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset='UTF-8'/>
+<script src='http://underscorejs.org/underscore-min.js'></script>
 <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>	<link href='http://api.ties.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
 
 <style>
@@ -10,12 +11,63 @@
 	font:normal 15px/20px Arial,sans-serif;
 	background:#fff;	
 	}
+  article {
+    width:33.3333%;
+    min-width:320px;
+    position:relative;
+    padding-top:40px;
+    padding-bottom:33.3333%;
+  }
+  section {
+    padding:40px;
+    margin-left:40px;
+    color:transparent;
+    text-shadow:rgba(64,64,64,1) 0px 0px 4px;
+    position:relative;
+    -webkit-transition:background 500ms, color 500ms;
+  }
+  section.active {
+    background:rgba(32,32,32,255);
+    color:rgba(255,255,255,0.9);
+    }
+  h1 { font-size:2em; line-height:1em; }
+  h2 { font-size:1.3333em; }
+  h1,h2 { margin:0px 0px 10px; }
+  p { margin:0px; }
+  small {
+    position:absolute;
+    right:0px; bottom:0px;
+    font-size:10px;
+    text-transform:uppercase;
+    padding:5px 10px;
+  }
+
+  .cover:before {
+    content:'';
+    display:block;
+    width:100px; height:100px;
+    margin:0px auto 20px;
+    border-radius:50%;
+    border:10px solid transparent;
+  }
+  .cover.active:before {
+    background:#333 url(sprite.png) 0px 0px no-repeat;
+    border-color:#333;
+  }
+
+  #pane {
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    right:0px;
+    width:66.6666%;
+  }
 	#map  {
 	position:absolute;
  	top:0px;
 	bottom:0px;
-		left:0px;
-	width:100%;
+  width:200%;
+  left:-50%;
  	}
 .spot {
   width:60px;
@@ -26,30 +78,181 @@
   background:#ff9270 url(sprite.png) 100px 100px no-repeat;
   position:absolute;
   }
-.spot-scene { background-position:-120px -20px; }
-.spot-precinct { background-position:-220px -20px; }
-.spot-ecab { background-position:-320px -20px; }
-.spot-central-booking { background-position:-420px -20px; }
-.spot-dcjs { background-position:-520px -20px; }
-.spot-holding-pens { background-position:-620px -20px; }
-.spot-breakdown-room { background-position:-720px -20px; }
-.spot-clerks-office { background-position:-820px -20px; }
-.spot-oca { background-position:-120px -20px; }
-.spot-interview-pens { background-position:-220px -20px; }
-.spot-nypd-desk { background-position:-320px -20px; }
-.spot-benches { background-position:-420px -20px; }
-.spot-court-officer { background-position:-520px -20px; }
-.spot-defense-stand { background-position:-620px -20px; }
-.spot-judge-bench { background-position:-720px -20px; }
-.spot-end-cover { background-position:-820px -20px; }
+  .spot-cover { display:none; }
+  .spot-scene { background-position:-120px -20px; }
+  .spot-scene.active { background-position:-100px 0px; }
+  .spot-precinct { background-position:-220px -20px; }
+  .spot-precinct.active { background-position:-200px 0px; }
+  .spot-ecab { background-position:-320px -20px; }
+  .spot-ecab.active { background-position:-300px 0px; }
+  .spot-central-booking { background-position:-420px -20px; }
+  .spot-central-booking.active { background-position:-400px 0px; }
+  .spot-dcjs { background-position:-520px -20px; }
+  .spot-dcjs.active { background-position:-500px 0px; }
+  .spot-holding-pens { background-position:-620px -20px; }
+  .spot-holding-pens.active { background-position:-600px -0px; }
+  .spot-breakdown-room { background-position:-720px -20px; }
+  .spot-breakdown-room.active { background-position:-700px -0px; }
+  .spot-clerks-office { background-position:-820px -20px; }
+  .spot-clerks-office.active { background-position:-800px -0px; }
+  .spot-oca { background-position:-120px -20px; }
+  .spot-oca.active { background-position:-100px 0px; }
+  .spot-interview-pens { background-position:-220px -20px; }
+  .spot-interview-pens.active { background-position:-200px 0px; }
+  .spot-nypd-desk { background-position:-320px -20px; }
+  .spot-nypd-desk.active { background-position:-300px 0px; }
+  .spot-benches { background-position:-420px -20px; }
+  .spot-benches.active { background-position:-400px -0px; }
+  .spot-court-interview { background-position:-820px -20px; }
+  .spot-court-interview.active { background-position:-800px -0px; }
+  .spot-court-officer { background-position:-520px -20px; }
+  .spot-court-officer.active { background-position:-500px -0px; }
+  .spot-defense-stand { background-position:-620px -20px; }
+  .spot-defense-stand.active { background-position:-600px -0px; }
+  .spot-judge-bench { background-position:-720px -20px; }
+  .spot-judge-bench.active { background-position:-700px -0px; }
+  .spot-end-cover { background-position:-820px -20px; }
+  .spot-end-cover.active { background-position:-800px -0px; }
+    border-color:#222;
+    background-color:#222;
+    width:100px; height:100px; margin:-60px 0px 0px -60px;
+  }
  </style>
  </head>
 
 <body>
- <div id='map'></div>
- 
+
+<div id='pane'><div id='map'></div></div>
+
+<article>
+  <section id='cover' class='cover active'>
+    <h1>Arrest to Arraignment</h1>
+    <h2>A NYC Story</h2>
+    <p>Since the <em>Roundtree vs. Brown</em> (1991) decision, New York state law mandates that the maximum time between when an individual suspected of a criminal act is arrested and their first appearance in court, arraignment, must occur within 24 hours. A complex series of steps must occur before this process is complete.</p>
+    <p>Scroll down to follow a typical arrest to arraignment story.</p>
+    <small>Scroll ▼</small>
+  </section>
+  
+  <section id='scene'>
+    <h2>Scene of Arrest</h2>
+    <h2>174 East 86th Street</h2>
+    <p>An individual suspected of a criminal act is handcuffed, detained by an NYPD Officer, and told their Miranda rights.</p>
+  </section>
+
+  <section id='precinct'>
+    <h2>NYPD 19th Precinct</h2>
+    <h2>153 East 67th Street</h2>
+    <p>The defendant is brought to the police precinct, by the arresting officer, in which the arrest occurred. The 19th Precinct serves Manhattan's Upper East Side and is one of the 76 precincts throughout the 5 boroughs. After answering questions about the pedigree of the defendant, the defendant is put in the holding cell at the precinct with other defendants.</p>
+  </section>
+
+  <section id='ecab'>
+    <h2>Early Case Assessment Bureau, Manhattan District Attorney's Office</h2>
+    <h2>100 Centre Street</h2>
+    <p>The arresting police officer faxes a copy of the Arrest Report to the office of the Assistant District Attorney of the borough where the crime took place in order to generate a formal Complaint, which includes the crimes the defendant is charged with. The ADA faxes back a copy of the Complaint to the arresting officer for review.</p>
+  </section>
+
+  <section id='precinct'>
+    <h2>NYPD 19th Precinct</h2>
+    <h2>153 East 67th Street</h2>
+    <p>Once the officer and the ADA resolve the differences via telephone, the officer signs the now Sworn Complaint and faxes back to the DA's Office which starts the criminal prosecution. </p>
+  </section>
+
+  <section id='central-booking'>
+    <h2>Manhattan Criminal Court Central Booking</h2>
+    <h2>100 Centre Street</h2>
+    <p>Each borough has its own criminal court each with their own Central Booking. Mug shots and fingerprints of the defendant are taken to generate an Arrest Report. A scan of the defendant's irises are taken for future identity verification. A Movement Slip with the mugshot, NYPD charges, and other arrest information is created and accompanies the defendant. 
+  </section>
+
+  <section id='dcjs'>
+  <h2>New York State Division of Criminal Justice Services</h2>
+    <h2>80 South Swan Street, Albany</h2>
+    <p>The fingerprints taken from the defendant are sent for processing to DCJS. The criminal history, commonly known as the rap sheet, associated with the defendant's fingerprints are matched within New York and for each individual state for which a rap sheet exists. </p>
+  </section>
+
+  <section id='holding-pens'>
+    <h2>Manhattan Criminal Court Holding Pens</h2>
+    <h2>100 Centre Street</h2>
+    <p>While at Central Booking, defendants are interviewed by the Criminal Justice Agency in order to generate a Release on Recognizance report. The report gives an indication about the perceived risk of the defendant to not return at a future court date if released from police custody. Possible recommendations for a defendant would be Low-Risk for not returning: ROR.; Medium-Risk: Bail Recommendation; High-Risk: No Bail.</p>
+  </section>
+
+  <section id='breakdown-room'>
+  <h2>NYPD Breakdown Room</h2>
+    <h2>unknown</h2>
+    <p>The Complaint drafted by the ADA, the criminal history and fingerprints from DCJS, and the CJA report on bail recommendation are received and matched to form the Court Packet.</p>
+  </section>
+
+  <section id='oca'>
+  <h2>Clerk's Office, Office of Court Administration (or Manhattan Criminal Court?)</h2>
+    <h2>100 Centre Street</h2>
+    <p>The papers collected at the Breakdown Room are brought to the OCA's Clerk's Office. A docket number is assigned to the court packet, packet information is initialized into the Court's electronic case system, CRIMS. The clerk assigns the case to a courtroom, known as a part, for arraignment. Clerk then checks the Court's electronic system for warrants and summonses (SAMS), Sex Offender notices, and Order of Protections from the Domestic Violence Registry for matches to the defendant.</p>
+  </section>
+
+  <section id='dcjs'>
+    <h2>New York State Division of Criminal Justice Services</h2>
+    <h2>80 South Swan Street, Albany</h2>
+    <p>An updated case report with docket information is sent to DCJS to update defendant's criminal history. </p>
+  </section>
+
+  <section id='oca'>
+    <h2>Clerk's Office, Office of Court Administration (or Manhattan Criminal Court?)</h2>
+    <h2>100 Centre Street</h2>
+    <p>Clerk prints and attaches any warrants, summonses, notices, and orders to Court Packets. NYPD and the DA pick-up completed packets from Clerk's Office. The packets for the court and for the defense are brought to the appropriate court part.</p>
+  </section>
+
+  <section id='interview-pens'>
+    <h2>Interview Pens, Manhattan Criminal Court</h2>
+    <h2>100 Centre Street</h2>
+    <p>Upon receipt of the court packet, including the Movement Slip, NYPD brings up specified defendant to interview pens behind the courtroom. The defendant is met by the defense counsel, either a private attorney hired by the defendant or a city-provided indigent defense attorney.</p>
+  </section>
+
+  <section id='nypd-desk'>
+    <h2>NYPD Desk</h2>
+    <h2>100 Centre Street, Room 129</h2>
+    <p>The defendant is brought to the courtroom for the time and brought to the NYPD desk. An NYPD officer scans the defendant's eyes to verify his or her identity with the scan taken at Central Booking. This eye-scan was adopted as part of the process in 2010 after a man that had been charged with five armed robberies posed as a defendant charged with a minor drug offense and then was ROR-ed rather than have had bail set. </p>
+  </section>
+
+  <section id='benches'>
+  <h2>Benches</h2>
+    <h2>Room 129</h2>
+    <p>Defendants awaiting to be seen by a judge are brought to the benches.</p>
+  </section>
+
+  <section id='court-interview'>
+    <h2>Courtroom Interview Pen</h2>
+    <h2>Room 129</h2>
+    <p>The interview pen within the courtroom allows for a defendant and his or her counsel to speak with confidentiality.</p>
+  </section>
+
+  <section id='defense-stand'>
+    <h2>Court Officer's Desk</h2>
+    <h2>Room 129</h2>
+    <p>The Court's copy of the Court Papers are given to the court officer. The Court Officer calls out the docket number and the defendant to the stand and then hands the Court's copy to the Judge.</p>
+    </section>
+
+  <section id='interview-pens'>
+    <h2>Defense Stand</h2>
+    <h2>Room 129</h2>
+    <p>Defendant joins  his or her lawyer at the defense stand alongside the ADA's stand. The ADA names the criminal charge or charges the defendant is accused of, describes the details of the case, presents any pertinent criminal history, and proposes a bail amount.</p>
+    <p>The defense attorney presents the details of the case from the point of view of the defendant and wil counter the ADA's bail proposal with either a lower amount or a request for ROR.</p>
+  </section>
+
+  <section id='judge-bench'>
+    <h2>Judge's Bench</h2>
+    <h2>Room 129</h2>
+    <p>Upon hearing from the ADA, representing either the victim or the people of the city of New York, and the defense, the judge makes a decision to either dispose the case, ROR the defendant to appear at a later court date, or set bail for the defendant.</p>
+    <p>In 2012, 51% of cases at arraignments were disposed, settled either by the case being dismissed or the judge sentencing a penalty of time served, a fine, or jail sentence.</p>
+  </section>
+
+  <section id='end-cover'>
+   <h2>Post-Arraignment</h2>
+    <p>If the case is dismissed or if the defendant is given time served or ROR, he or she is free from police custody and is able to leave the courtroom that day. If the defendant is sentenced to jail time or has had bail set, he or she remains in police custody and will be escorted by NYPD to a holding cell.</p>
+  </section>
+</article>
+
  <script>
  var geojson = [
+  { "geometry": { "type": "Point", "coordinates": [-73.973694, 40.772417] },
+    "properties": { "id": "cover" } },
   { "geometry": { "type": "Point", "coordinates": [-73.954641,40.779101] },
     "properties": { "id": "scene" } },
   { "geometry": { "type": "Point", "coordinates": [-73.964004,40.767009] },
@@ -74,6 +277,8 @@
     "properties": { "id": "nypd-desk" } },
   { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.68000] },
     "properties": { "id": "benches" } },
+  { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.62000] },
+    "properties": { "id": "court-interview" } },
   { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.65000] },
     "properties": { "id": "court-officer" } },
   { "geometry": { "type": "Point", "coordinates": [-74.001653, 40.64000] },
@@ -97,12 +302,56 @@
     return el;
   });
 
-    var map = mapbox
-      // Creates the map with tile and spots layers.
-    .map('map', [tiles, spots])
-      // Sets the initial map view to 0.1296E, 51.5011N @ Z14.
-    .centerzoom({ lon:-73.973694, lat:40.772417 }, 14);
+  // Creates the map with tile and marker layers and
+  // no input handlers (mouse drag, scrollwheel, etc).
+  var map = mapbox.map('map', [tiles, spots], null, []);
 
+  // Array of story section elements.
+  var sections = document.getElementsByTagName('section');
+
+  // Array of marker elements with order matching section elements.
+  var markers = _(sections).map(function(section) {
+  return _(spots.markers()).find(function(m) {
+  return m.data.properties.id === section.id;
+    });
+  });
+
+  // Helper to set the active section.
+  var setActive = function(index, ease) {
+    // Set active class on sections, markers.
+    _(sections).each(function(s) { s.className = s.className.replace(' active', '') });
+    _(markers).each(function(m) { m.element.className = m.element.className.replace(' active', '') });
+   sections[index].className += ' active';
+  markers[index].element.className += ' active';
+
+  // Ease map to active marker.
+  if (!ease) {
+  map.centerzoom(markers[index].location, markers[index].data.properties.zoom||14);
+  } else {
+  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||14).optimal(0.5, 1.00);
+  }
+
+  return true;
+};
+
+// Bind to scroll events to find the active section.
+window.onscroll = _(function() {
+  // If scrolled to the very top of the page set the first section active.
+  if (window.scrollY === 0) return setActive(0, true);
+
+  // Otherwise, conditionally determine the extent to which page must be
+  // scrolled for each section. The first section that matches the current
+  // scroll position wins and exits the loop early.
+  var memo = 0;
+  var buffer = (window.innerHeight*0.3333);
+  _(sections).any(function(el, index) {
+    memo += el.offsetHeight;
+    return window.scrollY < (memo-buffer) ? setActive(index, true) : false;
+  });
+  }).debounce(20);
+
+  // Set map to first section.
+  setActive(0, false);
  </script>
  
  </body>
