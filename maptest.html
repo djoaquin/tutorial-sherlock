@@ -3,14 +3,14 @@
 <head>
 <meta charset='UTF-8'/>
 <script src='http://underscorejs.org/underscore-min.js'></script>
-<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>	<link href='http://api.ties.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
+<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>  <link href='http://api.ties.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
 
 <style>
-	body {
-	margin:0px;
-	font:normal 15px/20px Arial,sans-serif;
-	background:#fff;	
-	}
+  body {
+  margin:0px;
+  font:normal 15px/20px Arial,sans-serif;
+  background:#fff;  
+  }
   article {
     width:33.3333%;
     min-width:320px;
@@ -62,13 +62,13 @@
     right:0px;
     width:66.6666%;
   }
-	#map  {
-	position:absolute;
- 	top:0px;
-	bottom:0px;
+  #map  {
+  position:absolute;
+  top:0px;
+  bottom:0px;
   width:200%;
   left:-50%;
- 	}
+  }
 .spot {
   width:60px;
   height:60px;
@@ -116,6 +116,17 @@
     border-color:#222;
     background-color:#222;
     width:100px; height:100px; margin:-60px 0px 0px -60px;
+  }
+  @media (max-width:640px) {
+    body { font-size:12px; line-height:16px; }
+    article { width:100%; min-width:100%; padding-top:0px; padding-bottom:200%; }
+    section { text-shadow:none; margin-left:0px; padding:30px; }
+    section.active { position:fixed; top:0px; }
+    #pane { width:100%; }
+    #map  { bottom:0%; width:100%; height:150%; left:0%; }
+    }
+  @media (min-width:1280px) {
+    body { font-size:18px; line-height:24px; }
   }
  </style>
  </head>
@@ -287,10 +298,10 @@
     "properties": { "id": "judge-bench" } },
   { "geometry": { "type": "Point", "coordinates": [-73.883657, 40.791335] },
     "properties": { "id": "end-cover" } }
-	];
+  ];
   var tiles = mapbox.layer().tilejson({
-  	tiles: [ "http://a.tiles.mapbox.com/v3/codeforamerica.map-hou1j3ux/{z}/{x}/{y}.png" ]
-	});
+    tiles: [ "http://a.tiles.mapbox.com/v3/codeforamerica.map-hou1j3ux/{z}/{x}/{y}.png" ]
+  });
   var spots = mapbox.markers.layer()
     // Load up markers from geojson data.
   .features(geojson)
