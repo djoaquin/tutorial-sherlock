@@ -128,25 +128,47 @@ p { margin:0px; }
   .spot-judge-bench.active { background-position:-1040px -120px; }
   .spot-end-cover { background-position:-130px 0px; }
   .spot-end-cover.active { background-position:-130px -120px; }
-    border-color:#222;
-    background-color:#222;
-    width:100px; height:100px; margin:-60px 0px 0px -60px;
-  }
+
+  /* Distinguish the "cover page" visually other sections. */
+  body.section-0 #map { opacity:0.5; }
+
+
   @media (max-width:640px) {
-    body { font-size:12px; line-height:16px; }
-    article { width:100%; min-width:100%; padding-top:0px; padding-bottom:200%; }
-    section { text-shadow:none; margin-left:0px; padding:30px; }
-    section.active { position:fixed; top:0px; }
+    body {
+      font-size:12px;
+      line-height:16px;
+      }
+    article {
+      width:100%;
+      min-width:100%;
+      padding-top:0px;
+      padding-bottom:200%;
+      }
+    section {
+      text-shadow:none;
+      margin-left:0px;
+      padding:30px;
+      }
+    section.active {
+      position:fixed; 
+      top:0px; left:0px; right:0px;
+      }
     #pane { width:100%; }
-    #map  { bottom:0%; width:100%; height:150%; left:0%; }
+    #map  {
+      bottom:0%;
+      width:100%;
+      height:150%;
+      left:0%; }
     }
   @media (min-width:1280px) {
-    body { font-size:18px; line-height:24px; }
+    body {
+      font-size:18px;
+      line-height:24px; 
+    }
   }
  </style>
  </head>
-
-<body>
+<body class= 'section-0'>
 
 <div id='pane'><div id='map'></div></div>
 
@@ -347,14 +369,17 @@ p { margin:0px; }
     // Set active class on sections, markers.
     _(sections).each(function(s) { s.className = s.className.replace(' active', '') });
     _(markers).each(function(m) { m.element.className = m.element.className.replace(' active', '') });
-   sections[index].className += ' active';
-  markers[index].element.className += ' active';
+    sections[index].className += ' active';
+    markers[index].element.className += ' active';
+
+    // Set a body class for the active section.
+    document.body.className = 'section-' + index;
 
   // Ease map to active marker.
   if (!ease) {
   map.centerzoom(markers[index].location, markers[index].data.properties.zoom||14);
   } else {
-  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||14).optimal(0.5, 1.00);
+  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||15).optimal(0.5, 1.00);
   }
 
   return true;
@@ -362,22 +387,35 @@ p { margin:0px; }
 
 // Bind to scroll events to find the active section.
 window.onscroll = _(function() {
+  // IE 8
+  if (window.pageYOffset === undefined) {
+    var y = document.documentElement.scrollTop;
+    var h = document.documentElement.clientHeight;
+  } else {
+    var y = window.pageYOffset;
+    var h = window.innerHeight;
+  }
   // If scrolled to the very top of the page set the first section active.
-  if (window.scrollY === 0) return setActive(0, true);
-
+  if (y === 0) return setActive(0, true);
+  
   // Otherwise, conditionally determine the extent to which page must be
   // scrolled for each section. The first section that matches the current
   // scroll position wins and exits the loop early.
   var memo = 0;
-  var buffer = (window.innerHeight*0.3333);
+  var buffer = (h * 0.3333);
   _(sections).any(function(el, index) {
     memo += el.offsetHeight;
-    return window.scrollY < (memo-buffer) ? setActive(index, true) : false;
+    return y < (memo-buffer) ? setActive(index, true) : false;
   });
-  }).debounce(20);
+
+  // If no section was set active the user has scrolled past the last section.
+  // Set the last section active.
+  if (!active) setActive(sections.length - 1, true);
+}).debounce(10);
 
   // Set map to first section.
   setActive(0, false);
  </script>
  
  </body>
+ </html>
