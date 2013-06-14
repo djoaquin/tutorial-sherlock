@@ -3,7 +3,7 @@
 <head>
 <meta charset='UTF-8'/>
 <script src='http://underscorejs.org/underscore-min.js'></script>
-<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>  <link href='http://api.ties.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
+<script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>  <link href='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.css' rel='stylesheet' />
 <!--<link href='stylesheet.css' rel='stylesheet' type="text/css"/>-->
 
 
@@ -12,7 +12,7 @@ body {
   margin:0px;
   padding:0px;
   font:normal 15px/20px Arial,sans-serif;
-  background:#e6e6e6;
+  background:#235451;
   }
 
 article {
@@ -178,6 +178,7 @@ p { margin:0px; }
     <h1>Arrest to Arraignment</h1>
     <h2>A NYC Story</h2>
     <p>Since the <em>Roundtree vs. Brown</em> (1991) decision, New York state law mandates that the maximum time between when an individual suspected of a criminal act is arrested and their first appearance in court, arraignment, must occur within 24 hours. A complex series of steps must occur before this process is complete.</p>
+    <br>
     <p>Scroll down to follow a typical arrest to arraignment story.</p>
     <small>Scroll ▼</small>
   </section>
@@ -360,7 +361,7 @@ p { margin:0px; }
     "properties": { "id": "end-cover" } }
   ];
   var tiles = mapbox.layer().tilejson({
-    tiles: [ "http://a.tiles.mapbox.com/v3/codeforamerica.map-hou1j3ux/{z}/{x}/{y}.png" ]
+    tiles: [ "http://a.tiles.mapbox.com/v3/doneliza-cfa.map-5pgnysh4/{z}/{x}/{y}.png" ]
   });
   var spots = mapbox.markers.layer()
     // Load up markers from geojson data.
@@ -402,7 +403,7 @@ p { margin:0px; }
   if (!ease) {
   map.centerzoom(markers[index].location, markers[index].data.properties.zoom||14);
   } else {
-  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||15).optimal(0.5, 1.00);
+  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||14).optimal(0.5, 1.00);
   }
 
   return true;
