@@ -66,7 +66,7 @@ p { margin:0px; }
   width:120px; height:120px;
   margin:0px auto 20px;
   }
-.cover.active:before { background:url(sprite.png) 0px -120px no-repeat; }
+.cover.active:before { background:url(sprite2.png) 0px -120px no-repeat; }
 
 #pane {
   position:fixed;
@@ -90,7 +90,7 @@ p { margin:0px; }
   width:120px;
   height:120px;
   margin:-60px 0px 0px -60px;
-  background:url(sprite.png) 120px 120px no-repeat;
+  background:url(sprite2.png) 120px 120px no-repeat;
   position:absolute;
   }
 
@@ -403,7 +403,7 @@ p { margin:0px; }
   if (!ease) {
   map.centerzoom(markers[index].location, markers[index].data.properties.zoom||14);
   } else {
-  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||14).optimal(0.5, 1.00);
+  map.ease.location(markers[index].location).zoom(markers[index].data.properties.zoom||15).optimal(0.5, 1.00);
   }
 
   return true;
